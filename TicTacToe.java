@@ -14,7 +14,7 @@ public class TicTacToe {
 		userLetter = chooseLetter();
 		computerLetter = (userLetter == 'X') ? 'O' : 'X';
 		showBoard(board);
-		int index = getMove(board);
+		board = makeMove(getMove(board), board, userLetter);
 	}
 
 	// Method to create board
@@ -68,6 +68,13 @@ public class TicTacToe {
 	// Method to check board is free
 	private static boolean isFree(char[] board, int index) {
 		return (board[index] == ' ');
+	}
+
+	// Method to make move
+	private static char[] makeMove(int index, char[] board, char letter) {
+		board[index] = letter;
+		showBoard(board);
+		return board;
 	}
 
 }
