@@ -13,6 +13,7 @@ public class TicTacToe {
 		char board[] = createBoard();
 		userLetter = chooseLetter();
 		computerLetter = (userLetter == 'X') ? 'O' : 'X';
+		showBoard(board);
 	}
 
 	// Method to create board
@@ -35,6 +36,16 @@ public class TicTacToe {
 				System.out.println("Invalid Entry!! Choose a letter 'X or 'O'");
 		}
 		return letter;
+	}
+
+	// Method to show board
+	private static void showBoard(char[] board) {
+		System.out.println("Current Board: ");
+		System.out.println(board[1] + " | " + board[2] + " | " + board[3]);
+		System.out.println("----------");
+		System.out.println(board[4] + " | " + board[5] + " | " + board[6]);
+		System.out.println("----------");
+		System.out.println(board[7] + " | " + board[8] + " | " + board[9]);
 	}
 
 }
