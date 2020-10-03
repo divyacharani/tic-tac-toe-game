@@ -6,6 +6,7 @@ public class TicTacToe {
 	static Scanner sc = new Scanner(System.in);
 	private static char userLetter;
 	private static char computerLetter;
+	private static boolean isPlayerTurn = false;
 
 	public static void main(String[] args) {
 		// Welcome Message
@@ -16,6 +17,7 @@ public class TicTacToe {
 		doToss();
 		showBoard(board);
 		board = makeMove(getMove(board), board, userLetter);
+		changeTurn(board);		
 	}
 
 	// Method to create board
@@ -81,10 +83,51 @@ public class TicTacToe {
 	// Method to do a toss
 	private static void doToss() {
 		int turn = (int) ((Math.random() * 10) % 2);
-		if (turn == 0)
+		if (turn == 0) {
+			isPlayerTurn = true;
 			System.out.println("User turn");
+		}
 		else
 			System.out.println("Computer turn");
 	}
+
+	// Method to check win
+	private static boolean isWin(char[] board) {
+		if ((board[1] == board[2] && board[2] == board[3] && board[1]!=' ') || (board[4] == board[5] && board[5] == board[6] && board[4]!=' ')
+				|| (board[7] == board[8] && board[8] == board[9] && board[7]!=' ') || (board[1] == board[4] && board[4] == board[7] && board[1]!=' ')
+				|| (board[2] == board[5] && board[5] == board[8] && board[2]!=' ') || (board[3] == board[6] && board[6] == board[9] && board[3]!=' ')
+				|| (board[1] == board[5] && board[5] == board[9] && board[1]!=' ') || (board[3] == board[5] && board[5] == board[7] && board[3]!=' '))
+			return true;
+		else
+			return false;
+	}
+	
+	//Method to check if board is full
+	private static boolean isFull(char[] board) {
+		for (int index = 1; index < board.length; index++) {
+			if(board[index]==' ')
+				return false;
+		}
+		return true;
+	}
+	
+	//Method to check Draw
+	private static boolean isDraw(char[] board) {
+		return (isFull(board) && !isWin(board));
+
+	}
+	
+	//Method to check win or draw after every move and change turn
+	private static void changeTurn(char[] board) {
+		if(!(isWin(board)) && !(isDraw(board)))
+			isPlayerTurn = !isPlayerTurn;
+		else if(isWin(board) && isPlayerTurn == false)
+			System.out.println("Computer Won!!");
+		else if(isWin(board) && isPlayerTurn == true)
+			System.out.println("You Won!!");
+		else if(isDraw(board))
+			System.out.println("It's a Draw!!");
+	}
+	
 
 }
