@@ -13,6 +13,7 @@ public class TicTacToe {
 		char board[] = createBoard();
 		userLetter = chooseLetter();
 		computerLetter = (userLetter == 'X') ? 'O' : 'X';
+		doToss();
 		showBoard(board);
 		board = makeMove(getMove(board), board, userLetter);
 	}
@@ -75,6 +76,15 @@ public class TicTacToe {
 		board[index] = letter;
 		showBoard(board);
 		return board;
+	}
+
+	// Method to do a toss
+	private static void doToss() {
+		int turn = (int) ((Math.random() * 10) % 2);
+		if (turn == 0)
+			System.out.println("User turn");
+		else
+			System.out.println("Computer turn");
 	}
 
 }
