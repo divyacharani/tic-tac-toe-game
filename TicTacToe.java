@@ -14,6 +14,7 @@ public class TicTacToe {
 		userLetter = chooseLetter();
 		computerLetter = (userLetter == 'X') ? 'O' : 'X';
 		showBoard(board);
+		int index = getMove(board);
 	}
 
 	// Method to create board
@@ -46,6 +47,27 @@ public class TicTacToe {
 		System.out.println(board[4] + " | " + board[5] + " | " + board[6]);
 		System.out.println("----------");
 		System.out.println(board[7] + " | " + board[8] + " | " + board[9]);
+	}
+
+	// Method to getMove
+	private static int getMove(char[] board) {
+		int index;
+		while (true) {
+			System.out.println("Select the index from 1 to 9");
+			index = sc.nextInt();
+			if (index <= 0 || index > 9)
+				System.out.println("Invalid!! Enter between 1 to 9");
+			else if (isFree(board, index)) {
+				break;
+			} else
+				System.out.println("Position is occupied!! Enter another index");
+		}
+		return index;
+	}
+
+	// Method to check board is free
+	private static boolean isFree(char[] board, int index) {
+		return (board[index] == ' ');
 	}
 
 }
