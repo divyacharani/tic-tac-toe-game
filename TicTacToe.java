@@ -11,6 +11,23 @@ public class TicTacToe {
 	public static void main(String[] args) {
 		// Welcome Message
 		System.out.println("Welcome to Tic Tac Toe game");
+		char choice;
+		do {
+			playGame();
+			while(true) {
+				System.out.println("Do you want to play again (Y|N) ");
+				choice = sc.next().toUpperCase().charAt(0);
+				if(choice=='Y' || choice == 'N')
+					break;
+				else
+					System.out.println("Invalid!! Enter (Y|N)");
+			}
+		} while (choice == 'Y');
+		System.out.println("Thanks for playing");
+	}
+
+	// Method to play game
+	private static void playGame() {
 		char board[] = createBoard();
 		userLetter = chooseLetter();
 		computerLetter = (userLetter == 'X') ? 'O' : 'X';
@@ -23,7 +40,7 @@ public class TicTacToe {
 					break;
 				}
 				board = makeMove(check, board, userLetter);
-				
+
 				check = computerMove(board);
 				if (check == -1) {
 					declareWinOrDraw(userLetter, board);
@@ -31,8 +48,7 @@ public class TicTacToe {
 				}
 				System.out.println("Now Computer's Turn");
 				board = makeMove(check, board, computerLetter);
-			} 
-			else if (!HEAD) {
+			} else if (!HEAD) {
 				int check = computerMove(board);
 				if (check == -1) {
 					declareWinOrDraw(userLetter, board);
@@ -40,7 +56,7 @@ public class TicTacToe {
 				}
 				System.out.println("Now Computer's Turn");
 				board = makeMove(check, board, computerLetter);
-				
+
 				check = getMove(board);
 				if (check == -1) {
 					declareWinOrDraw(computerLetter, board);
