@@ -114,7 +114,6 @@ public class TicTacToe {
 	//Method to check Draw
 	private static boolean isDraw(char[] board) {
 		return (isFull(board) && !isWin(board));
-
 	}
 	
 	//Method to check win or draw after every move and change turn
@@ -122,12 +121,24 @@ public class TicTacToe {
 		if(!(isWin(board)) && !(isDraw(board)))
 			isPlayerTurn = !isPlayerTurn;
 		else if(isWin(board) && isPlayerTurn == false)
-			System.out.println("Computer Won!!");
+			System.out.println("Computer Won!!"); 
 		else if(isWin(board) && isPlayerTurn == true)
 			System.out.println("You Won!!");
 		else if(isDraw(board))
 			System.out.println("It's a Draw!!");
 	}
 	
-
+	//Method to get computer win index
+	private static int computerWinIndex(char[] board) {
+		int index=-1;
+		for(int position = 1;position<board.length;position++) {
+			if(board[position]==' ') {
+				board[position] = computerLetter;
+				if(isWin(board))
+					index = position;
+				board[position] = ' ';
+			}
+		}
+		return index;
+	}
 }
