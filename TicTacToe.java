@@ -6,7 +6,7 @@ public class TicTacToe {
 	static Scanner sc = new Scanner(System.in);
 	private static char userLetter;
 	private static char computerLetter;
-	private static boolean isPlayerTurn = false;
+	private static boolean HEAD = false;
 
 	public static void main(String[] args) {
 		// Welcome Message
@@ -14,10 +14,41 @@ public class TicTacToe {
 		char board[] = createBoard();
 		userLetter = chooseLetter();
 		computerLetter = (userLetter == 'X') ? 'O' : 'X';
-		doToss();
-		showBoard(board);
-		board = makeMove(getMove(board), board, userLetter);
-		changeTurn(board);
+		doToss(); // Do Toss to determine who play's first
+		while (true) {
+			if (HEAD) {
+				int check = getMove(board);
+				if (check == -1) {
+					declareWinOrDraw(computerLetter, board);
+					break;
+				}
+				board = makeMove(check, board, userLetter);
+				
+				check = computerMove(board);
+				if (check == -1) {
+					declareWinOrDraw(userLetter, board);
+					break;
+				}
+				System.out.println("Now Computer's Turn");
+				board = makeMove(check, board, computerLetter);
+			} 
+			else if (!HEAD) {
+				int check = computerMove(board);
+				if (check == -1) {
+					declareWinOrDraw(userLetter, board);
+					break;
+				}
+				System.out.println("Now Computer's Turn");
+				board = makeMove(check, board, computerLetter);
+				
+				check = getMove(board);
+				if (check == -1) {
+					declareWinOrDraw(computerLetter, board);
+					break;
+				}
+				board = makeMove(check, board, userLetter);
+			}
+		}
 	}
 
 	// Method to create board
@@ -54,16 +85,18 @@ public class TicTacToe {
 
 	// Method to getMove
 	private static int getMove(char[] board) {
-		int index;
-		while (true) {
-			System.out.println("Select the index from 1 to 9");
-			index = sc.nextInt();
-			if (index <= 0 || index > 9)
-				System.out.println("Invalid!! Enter between 1 to 9");
-			else if (isFree(board, index)) {
-				break;
-			} else
-				System.out.println("Position is occupied!! Enter another index");
+		int index = -1;
+		if ((!isWin(board)) && (!isDraw(board))) {
+			while (true) {
+				System.out.println("Select the index from 1 to 9");
+				index = sc.nextInt();
+				if (index <= 0 || index > 9)
+					System.out.println("Invalid!! Enter between 1 to 9");
+				else if (isFree(board, index)) {
+					break;
+				} else
+					System.out.println("Position is occupied!! Enter another index");
+			}
 		}
 		return index;
 	}
@@ -84,8 +117,8 @@ public class TicTacToe {
 	private static void doToss() {
 		int turn = (int) ((Math.random() * 10) % 2);
 		if (turn == 0) {
-			isPlayerTurn = true;
-			System.out.println("User turn");
+			HEAD = true;
+			System.out.println("Your turn");
 		} else
 			System.out.println("Computer turn");
 	}
@@ -117,18 +150,6 @@ public class TicTacToe {
 	// Method to check Draw
 	private static boolean isDraw(char[] board) {
 		return (isFull(board) && !isWin(board));
-	}
-
-	// Method to check win or draw after every move and change turn
-	private static void changeTurn(char[] board) {
-		if (!(isWin(board)) && !(isDraw(board)))
-			isPlayerTurn = !isPlayerTurn;
-		else if (isWin(board) && isPlayerTurn == false)
-			System.out.println("Computer Won!!");
-		else if (isWin(board) && isPlayerTurn == true)
-			System.out.println("You Won!!");
-		else if (isDraw(board))
-			System.out.println("It's a Draw!!");
 	}
 
 	// Method to get computer win index
@@ -188,17 +209,30 @@ public class TicTacToe {
 	}
 
 	// Method to make computer move
-	private static char[] makeComputerMove(char[] board) {
-		if (computerWinIndex(board) != -1)
-			board[computerWinIndex(board)] = computerLetter;
-		else if (playerWinIndex(board) != -1)
-			board[playerWinIndex(board)] = computerLetter;
-		else if (availableCorners(board) != -1)
-			board[availableCorners(board)] = computerLetter;
-		else if (board[5] == ' ')
-			board[5] = computerLetter;
+	private static int computerMove(char[] board) {
+		int index = -1;
+		if ((!isWin(board)) && (!isDraw(board))) {
+			if (computerWinIndex(board) != -1)
+				index = computerWinIndex(board);
+			else if (playerWinIndex(board) != -1)
+				index = playerWinIndex(board);
+			else if (availableCorners(board) != -1)
+				index = availableCorners(board);
+			else if (board[5] == ' ')
+				index = 5;
+			else if (!(isFull(board)))
+				index = availableSides(board);
+		}
+		return index;
+	}
+
+	// Method to declare win or draw
+	private static void declareWinOrDraw(char letter, char[] board) {
+		if ((!(isDraw(board)) && letter == userLetter))
+			System.out.println("You Won!!");
+		else if ((!(isDraw(board)) && letter == computerLetter))
+			System.out.println("Computer Won!!");
 		else
-			board[availableSides(board)] = computerLetter;
-		return board;
+			System.out.println("It's a Draw!!");
 	}
 }
