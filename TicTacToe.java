@@ -159,7 +159,7 @@ public class TicTacToe {
 		return index;
 	}
 
-	// Method to check available corner
+	// Method to check available corner spaces
 	private static int availableCorners(char[] board) {
 		int index = -1;
 		if (board[1] == ' ')
@@ -171,5 +171,34 @@ public class TicTacToe {
 		else if (board[9] == ' ')
 			index = 9;
 		return index;
+	}
+
+	// Method to check available side spaces
+	private static int availableSides(char[] board) {
+		int index = -1;
+		if (board[2] == ' ')
+			index = 2;
+		else if (board[4] == ' ')
+			index = 4;
+		else if (board[6] == ' ')
+			index = 6;
+		else if (board[8] == ' ')
+			index = 8;
+		return index;
+	}
+
+	// Method to make computer move
+	private static char[] makeComputerMove(char[] board) {
+		if (computerWinIndex(board) != -1)
+			board[computerWinIndex(board)] = computerLetter;
+		else if (playerWinIndex(board) != -1)
+			board[playerWinIndex(board)] = computerLetter;
+		else if (availableCorners(board) != -1)
+			board[availableCorners(board)] = computerLetter;
+		else if (board[5] == ' ')
+			board[5] = computerLetter;
+		else
+			board[availableSides(board)] = computerLetter;
+		return board;
 	}
 }
